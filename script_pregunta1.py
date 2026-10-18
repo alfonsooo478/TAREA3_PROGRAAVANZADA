@@ -2,12 +2,21 @@
 import numpy as np
 import time
 
-class calc :
-    def __init__ ( z) :
-        z . d ={}
-    def p (z ,n , vals ) :
-        if n <=0: return 0.0
-        if n ==1: return vals [0]
-        if n in z . d : return z. d [ n ]
-        r = min ( z . p (n -1 , vals ) + vals [n -1] , z . p (n -2 , vals ) + vals [n -1]*0.8)
-        z . d [ n ]= r ; return r
+def costo_minimo_perdidas(n, vals):
+    assert n >= 0
+    if n == 0:
+        return 0.0
+    dp = np.zeros(n + 1)    
+    try:
+        dp[1] = float(vals[0])
+
+        for i in range(2, n + 1):
+            costo = float(vals[i - 1])
+            dp[i] = min(dp[i - 1] + costo, dp[i - 2] + costo * 0.8)
+
+        return dp[n]
+
+    except (TypeError, ValueError, IndexError):
+        print("Alerta: datos inválidos en los sensores SCADA")
+        return None
+
